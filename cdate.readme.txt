@@ -1,0 +1,77 @@
+Chinese calendar converter
+
+This function can return the date of Chinese lunar calendar which is corresponding to the Gregorian calendar. Range from Jan  1st,1901 to Feb 11th,2021.
+
+How to use:
+
+Array getchinesedate(int year,int month,int day); year,month,day are the year, month, day of the Gregorian calendar.
+
+Returns an array with 6 elements. Index 0 contains the year of the Chinese lunar calendar, index 1 contains the month of it. index 2 is the day of it, index 3 contains 1( if the month is a leap month ) and 0 ( if not ), index 4 is the Heavenly Stems of the Chinese lunar calendar, and index 5 contains the Earthly Branches of it.
+
+The Chinese Lunar Calendar is a yearly one, with the start of the lunar year being based on the cycles of the moon. Therefore, because of this cyclical dating, the beginning of the year can fall anywhere between late January and the middle of February. A complete cycle takes 60 years and is made up of five cycles of 12 years each. 
+
+A cycle of Twelve Terrestrial Branches5 (Zi, Chou, Yin, Mao, Chen, Si, Wu, Wei, Shen, You, Xu, Hai), correlated with Ten Celestial Trunks6 (Jia, Yi, Bing, Ding, Wu, Ji, Geng, Xin, Ren, Gui), forms sixty units to mark the year, month, day and hour. And each unit has its own name, for example, General Jinbian of the Supreme Year Jiazi, General Chencai of the Supreme Year Yichou, etc.
+
+Ten Heavenly Stems and twelve Earthly Branches
+ 
+Ten Heavenly Stems  
+Jia --- the first of the ten Heavenly Stems
+Yi --- the second of the ten Heavenly Stems
+Bing --- the third of the ten Heavenly Stems
+Ding --- the fourth of the ten Heavenly Stems
+Wu --- the fifth of the ten Heavenly Stems
+Ji --- the sixth of the ten Heavenly Stems
+Geng --- the seventh of the ten Heavenly Stems
+Xin --- the eighth of the ten Heavenly Stems
+Ren --- the ninth of the ten Heavenly Stems
+Kui --- the last of the ten Heavenly Stems  
+
+twelve Earthly Branches 
+Zi --- the first of the twelve Earthly Branches
+Chou --- the second of the twelve Earthly Branches
+Yin --- the third of the twelve Earthly Branches
+Mao --- the fourth of the twelve Earthly Branches
+Chen --- the fifth of the twelve Earthly Branches
+Si --- the sixth of the twelve Earthly Branches
+Wu --- the seventh of the twelve Earthly Branches
+Wei --- the eighth of the twelve Earthly Branches
+Shen --- the ninth of the twelve Earthly Branches
+You --- the tenth of the twelve Earthly Branches
+Xu --- the eleventh of the twelve Earthly Branches
+Hai --- the last of the twelve Earthly Branches 
+
+We also offer customization service. If you want to add new functions to your program, or want to give your program a new look and feel, please let us know your need.The most important, we charge you the incredible low price--only $5/h. (flexcustom@china-on-site.com) Meanwhile,if you have other project like website design,translation(English--Chinese) and programming, you can also outsource it to us.We offer the best service and the lowest price. ( outsource@china-on-site.com)
+
+For more information, please visit: http://www.china-on-site.com/flexphpsite/
+
+Introduction of FlexPHPSite:
+
+FlexPHPSite is a website content management system.  You can customize database table structure or add new table to the database. You can edit it according to your demand and make it applicable to most websites, not only content management.
+
+I  You can add or customize the fields according to your demand. All the contents will change automatically in both front program and admin program. You can also define whether they are displayed or not. If displayed, you can define their display sequence.
+
+II In our opinion, link is the most important function of a website, so we offer you a powerful link customizing system. Here we have five link methods for your choice: global link, table link, keyword link, option link and single link. You can customize every link as you wish.
+  
+III  You can define the search program in the front program. 
+
+IV  The system allow your vistor provide contents for you. The administrator will receive a message and audit the submission.
+
+V  Our install system is automatic. Our help system is friendly. It can help you master our system quickly. 
+
+VI  You can define your table's parent table when you add a table. 
+
+VII  Easy for internationalization. All the program text are defined in a file. Once you edit this file, you can create a new version of your program of a different language. You can also customize the text in your program.
+
+Our Pro version has the following additional functions:
+
+I  When you add contents, it will generate search engine friendly pages like 12.php and cookingcatalog12.php. Since the parameter in the URl is removed, search engine can crawl them smoothly. This is good for your search engine promotion.
+
+II  You can manage the page contents for search engine, such as meta keywords. You can implement these contents on one page or many pages for better search engine promotion.
+
+III You can add administors and assign their permission.
+
+IV Technique support and service.
+
+
+For more information, please visit: http://www.china-on-site.com/flexphpsite/ 
+

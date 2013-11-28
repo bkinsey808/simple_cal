@@ -1,0 +1,5 @@
+Moon Day: {science} Moon Day commemorates the day man first walked on the moon in 1969. 
+
+Poplifugia: {Roman} The poplifugia or populifugia (Latin: the day of the people's flight), was a festival of ancient Rome celebrated on July 5, according to Varro,[1] in commemoration of the flight of the Romans, when the inhabitants of Ficuleae and Fidenae appeared in arms against them, shortly after the burning of the city by the Gauls (see Battle of the Allia); the traditional victory of the Romans, which followed, was commemorated on July 7 (called the Nonae Caprotinae as a feast of Juno Caprotina), and on the next day was the Vitulatio, supposed to mark the thank-offering of the pontifices for the event.
+
+Ludi Victoriae Caesarae: {Roman} Following the example of Sulla, in 46 BC Julius Caesar established games to celebrate his Roman Civil War victory over Pompeius at Pharsalus. The four last days featured chariot racing. 
