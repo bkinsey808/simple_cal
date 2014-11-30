@@ -1,0 +1,45 @@
+[
+    {
+        "name": "querypath/querypath",
+        "version": "3.0.2",
+        "version_normalized": "3.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/technosophos/querypath.git",
+            "reference": "e0895d54d083144548ec3d599f1e968bba2b3efc"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/technosophos/querypath/zipball/e0895d54d083144548ec3d599f1e968bba2b3efc",
+            "reference": "e0895d54d083144548ec3d599f1e968bba2b3efc",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2013-05-24 02:50:10",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "QueryPath": "src/"
+            },
+            "files": [
+                "src/qp_functions.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "HTML/XML querying (CSS 4 or XPath) and processing (like jQuery)",
+        "homepage": "https://github.com/technosophos/querypath",
+        "keywords": [
+            "css",
+            "html",
+            "jquery",
+            "xml",
+            "xslt"
+        ]
+    }
+]

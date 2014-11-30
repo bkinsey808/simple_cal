@@ -1,0 +1,229 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+
+<html>
+<head>
+	<title>Javascript AstroTools: Jupiter Tool Manual</title>
+	<meta name="Author" content="Ole Nielsen">
+	<meta name="Description" content="Javascript Jupiter Manual">
+	<meta name="KeyWords" content="amateur astronomy, astronomical calculation, javascript, moon, planet visibility">
+	<base target=_self>
+	<link rel=stylesheet type="text/css" href="calc.css">
+	<style type="text/css">
+		.tool {font-weight:bold}
+	</style>
+</head>
+
+<body bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#0080ff" alink="#ff00ff">
+
+<p align=center><A HREF="javascript:window.close()">close window</A></p>
+
+<h1>Jupiter Tool Manual</h1>
+
+<p align=center><a href="#usage">Usage</a> - <a href="#browser">Browser notes</a> -
+<a href="#copyright">Copyright notice</a> - <a href="#source">Source</a> - 
+<a href="history.html">History</a> - <a href="glossary.html">Glossary of astronomical terms</a></p>
+
+<hr>
+
+<p style="color:#ff0; font-size:16px; font-weight:bold;">Important note for Internet Explorer 6 users:<br>
+If you don't see any satellites around Jupiter when loading Jupiter Tool please try the following: <br>
+Select a place from the Places selection list. This should restore the display and make all controls working.
+Don't forget to store the location by clicking 'Store'. Then IE6 should start properly next time.<br>
+The problem seems to be related to a bug in the IE6 javascript interpreter. 
+The error messages in IE6 are next to useless and the apparent position 
+of the javascript error according to IE6 makes no sense in relation to the symptoms. 
+Mozilla and Firefox do not show any problems, so consider switching to one of 
+these browsers if you can't make IE6 working.<br>
+</p>
+
+<p>Jupiter Tool is an application for calculating Jovian events and simulating the movements 
+of the Galilean satellites and the 
+Great Red Spot (GRS) on Jupiter. 
+The longitudes of the central meridian of Jupiter's system I and II are
+also displayed (useful for observation of features on Jupiter).</p>
+<p>Jupiter Tool is part of the Javascript Astrotools suite. The application is written entirely in javascript and executed by the Javascript interpreter 
+of your web browser.</p>
+
+<HR>
+
+<h3>Introduction to Jupiter observation</h3>
+<p>Jupiter is the largest planet of our solar system and a favourite target for observation by 
+amateur astronomers. Jupiter is a gas giant without a solid surface and different parts of the planet rotate
+at slightly different speeds. Three rotational 'systems' are recognised. 
+System I comprises the equatorial zone between the
+two equatorial belts and has a rotation period of 9 hours 50 minutes and 30 seconds. 
+System II comprises the regions between the equatorial belts and the poles and rotates once 
+in 9 hours 56 minutes and 41 seconds.
+There is also a third system rooted deeply inside Jupiter. 
+This system is only detectable by its radio emissions and has no visual effects on Jupiter. 
+The most famous feature of Jupiter is the Great Red Spot (GRS) which is
+a gigantic storm that has persisted for centuries. It is generally attached to System
+II but slowly drifts in longitude, see further below. Other well-known but less persistent features are 
+white ovals and dark 'barges' in the equatorial belts. 
+Observers of such features need to know the longitude of the Central Meridian of each system
+at the time of observation in order
+to track these features between different rotations.</p>
+
+<p><b>The Galilean Moons</b><br>
+The four large satellites, Io, Europa, Ganymede and Callisto, were discovered by Galileo and therefore
+often called the Galilean Moons. In Jupiter Tool they are labelled 1 (Io), 2 (Europa), 3 (Ganymede) and 
+4 (Callisto). The satellites and their movements from hour to hour is easily observed with standard 
+handheld binoculars. 
+When a satellite passes between the Sun and Jupiter it will cast a shadow on the surface 
+of Jupiter. 
+Such transits of satellite shadows on the disk of Jupiter are easy to 
+observe in most amateur telescopes and observing such events is a favoured 
+pastime for amateur astronomers. On the other hand observing the transits of the 
+satellites themselves is much more difficult due to the low contrast of 
+particularly Io and Europa against the surface of Jupiter. Ganymede and 
+Callisto are considably darker than Jupiter itself and transits of these moons 
+may be confused with shadow transits. The primary aim of Juptool is to 
+predict and simulate such events.
+</p>
+
+<h3><a name="usage">Usage</a></h3>
+
+<p>The user interface is an adapted version of the interface of AstroTools Ephemeris. Only parts specific
+to Jupiter Tool are discussed here.</p>
+
+<p>At the top you see a window displaying Jupiter and visible satellites. North is up and east to 
+the left. At the lower left the current azimuth and altitude of Jupiter is shown together with the Sun's 
+altitude. At the lower right are shown the longitudes of the central meridian (CM) of system I and II.<br>
+Below you find the controls for setting the time, controlling zoom and animation etc. <br>
+Further down you find controls for generating a list of Jupiter events.<br>
+The bottom section of the interface comprises the controls for setting the 
+observer location and time zone (see Ephemeris Tool for information about changing your location or time zone).
+Note that Jupiter Tool shares the observatory cookie with other components of Astrotools thus it will default
+to the observatory location defined in Ephemeris Tool.</p>
+
+<p><b>Time</b><br>
+Enter the desired date and time directly or use the time step buttons to step forwards or backwards in
+time.</p>
+
+<p><b>Zoom</b><br>
+You can choose between
+a full-width view showing the complete orbits of all satellites or a zoomed-in view showing Jupiter
+in greater details including the Great Red Spot. Press 'zoom in' and 'zoom out' buttons to switch between
+these two views.</p>
+
+<p><b>Animation</b><br>
+To animate the motion of the satellites and the GRS press either the forward or the backward 'Animate'
+button. You can control the speed of the animation from the selection list to the right of the 
+animation buttons. Stop the animation by pressing STOP or any of the time step buttons.</p>
+
+<p><b>Longitude of the GRS</b><br>
+The Great Red Spot is in general attached to Jupiter's System II but drifts slowly in longitude.
+To show the GRS correctly enter the current longitude in the 'Long. of GRS' input field. 
+The default value is 94&deg;. You can get
+the latest known longitude of the GRS from 'Sky and Telescope' magazine or their  
+<a href="http://skyandtelescope.com/search.asp?section=all&terms=GRS">web site</a>.
+</p>
+
+<p><b>List events</b><br>
+By clicking this button you will get a list of satellite events within the near future. Select the
+desired period from the selection list. You can also include crossings of the Great Red Spot by checking
+the GRS checkbox. Events visible from the observer location are shown in bold 
+('Visibility' is, somewhat arbitrarily, chosen
+to be when Jupiter is at least 3&deg; above the horizon and the Sun at least 3&deg; below the horizon).<br>
+Please notice that the event calculations are based on interpolation techniques
+(for speed reasons) and the times indicated can be 3-4 minutes off those listed in accurate tables.
+The simulated display is more precise than the calculated contact times because it is based on instantaneous calculated positions.<br>
+The times refer to the 'touching' of the center of the satellite to the limb of Jupiter. As an event really
+starts when the limb of the satellite and Jupiter make contact the real starting or ending time may be
+a few minutes earlier/later than the center contact time. The extreme situation is Callisto that may skim
+the polar regions of Jupiter by less than the radius of the satellite 
+without ever being detected as a transit/occultation by Juptool.</p>
+
+<hr>
+<h4>Precision</h4>
+<p>In order to get a decent animation speed Jupiter Tool trades precision for speed.
+The calculations of the physical features of Jupiter (longitudes of System I and II etc) are based
+on the 'lower accuracy' method in chapter 43 of "Astronomical Algorithms", 
+2nd edition by Jean Meeus. The positions of the satellites
+and their shadows are based on the 'high accuracy' method in chapter 44 of 'Meeus' 
+but with several 'short cuts' (truncations of terms etc) to speed up calculations.
+I believe that relative positions of satellites are accurate to within half an arcsecond or so.
+Longitudes of system I and II should be accurate to about 0.2&deg;</p>
+
+<p>Some aspects are not simulated. The 'planetocentric declination of Earth' (the tilt of the equator of
+Jupiter) is not shown (difficult to do that with Javascript graphics). Neither is the phase of Jupiter. 
+The position of 
+the center of a satellite (shadow) determines if it is shown as eclipsed or a shadow is visible. 
+Thus the script may miss partial shadows at the limb and partly eclipsed satellites.</p>
+
+<hr>
+<h3><a name="browser">Browser notes</a></h3>
+
+<p>Jupiter Tool is demanding on the browser. 
+It requires a current browser supporting at least javascript v1.3 and CSS2. It
+will fail on older browsers like Netscape 4 and IE5. It has been tested on Mozilla 1.7.3, Firefox 1.0PR and Internet Explorer 6.</p>
+
+<p>You need a fast computer to get a smooth animation. A two GHz computer
+or better is recommended. On a sub-gigahertz machine the animation is quite jerky.</p>
+
+<hr>
+
+<h3><a name="copyright">Copyright Notice</a></h3>
+<p>Astrotools and all its subcomponents like Jupiter Tool have been released under the GNU 
+General Public Licence (GNU GPL).</p>
+
+<pre>
+    Copyright (C) 2004-2005  Ole Nielsen
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+</pre>
+
+<p>Please see <a href="gpl.txt">gpl.txt</a> for the full text of the GNU GPL.</p>
+
+<p>Please also visit the 
+<a href="http://www.peter-hayes.freeserve.co.uk/ephemeris/" target=_top>Javascript Ephemeris</a> 
+web site of Peter Hayes. His site and javascript code has been the inspiration for my application. Although the
+majority of my code is new or completely rewritten  
+some code fragments can still be traced back to his original code. Any code provided by Peter Hayes 
+is copyright &copy; Peter Hayes 1999-2001.</p>
+
+
+<hr>
+
+<h3><a name="source">Source</a></h3>
+
+<p>You can run Astrotools off-line from your own hard disk. 
+Download <a href="astrotools.zip">astrotools.zip</a> to your computer and unzip the archive 
+to a folder of your choice. Open "astrotools2.html" in your browser 
+to start AstroTools. Don't forget to bookmark this file in your browser for later use.</p>
+
+<p>You may redistribute Astrotools under the terms of the GNU GPL (see above).
+You must include all files including the text of the GNU GPL (gpl.txt).</P>
+
+<hr>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!-- Begin
+
+domain = "planet.nl";
+user = "astronomi";
+
+document.write('<p>Contact <a href=\"mailto:' + user + '@' + domain + '\">');
+document.write('Ole Nielsen' + '</a></p>');
+// End -->
+</SCRIPT>
+
+<p>Home page: <a href="http://www.ngc7000.org/" target=_top>Ole's Astronomy Site</a></p>
+
+<p>If you came here via a search engine: <a href="astrotools.html" target=_top>AstroTools</a></p>
+
+</body>
+
+</html>

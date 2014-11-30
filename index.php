@@ -3,6 +3,22 @@
 <body>
 
 <?php 
+require 'vendor/autoload.php';
+
+function initDrik() {
+  $ckfile = tempnam ("/tmp", "CURLCOOKIE");
+  $ch = curl_init ("http://www.drikpanchang.com/location/panchang-city-finder.html?l=8592");
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt ($ch, CURLOPT_COOKIEJAR, $ckfile);
+  curl_exec ($ch);
+  return $ch;
+}
+
+$ch = initDrik();
+
+
+
+
 
 date_default_timezone_set('Pacific/Honolulu');
 
@@ -48,7 +64,12 @@ $columns = array(
   //"ISO Week of Year" => "IW",
   //"Last Week of Month" => "LW",
   "Fixed Holidays" => "Fixed Holidays",
-  "Floating Holidays" => "Floating Holidays"
+  "Floating Holidays" => "Floating Holidays",
+  "Amanta Chandramas" => "Am. Ch.",
+  "Tithi" => "Tithi",
+  "Paksha" => "Paksha",
+  "Nakshatra" => "Nakshatra",
+  "Yoga" => "Yoga"
 );
 
 echo "<table border=1><tr>";
@@ -57,8 +78,14 @@ foreach ($columns as $column_name => $column_abbr) {
 }
 echo "</tr>";
 for ($i = 0; $i<$l; $i++) {
+
+  $hindu_cal = get_hindu_cal($date);
+
   echo "<tr>";
+
   foreach ($columns as $column_name => $column_abbr) {
+
+
     if ($column_name == "Date") {
       echo "<td>" . $date->format('Y-m-d') . "</td>\n";
     }
@@ -102,10 +129,25 @@ for ($i = 0; $i<$l; $i++) {
       echo "<td>" . fixed_holidays($date) . "</td>\n";
     }
     if ($column_name == "Floating Holidays") {
-      echo "<td>" . floating_holidays($date) . "</td>\n";
+      echo "<td>" . floating_holidays($date, $hindu_cal) . "</td>\n";
     }
     if ($column_name == "Easter Days") {
       echo "<td>" . get_easter_days($date) . "</td>\n";
+    }
+    if ($column_name == "Amanta Chandramas") {
+      echo "<td>" . $hindu_cal['amanta_chandramas'] . "</td>\n";
+    }
+    if ($column_name == "Tithi") {
+      echo "<td>" . $hindu_cal['tithi'] . "</td>\n";
+    }
+    if ($column_name == "Paksha") {
+      echo "<td>" . $hindu_cal['paksha'] . "</td>\n";
+    }
+    if ($column_name == "Nakshatra") {
+      echo "<td>" . $hindu_cal['nakshatra'] . "</td>\n";
+    }
+    if ($column_name == "Yoga") {
+      echo "<td>" . $hindu_cal['yoga'] . "</td>\n";
     }
   }
   $date->add(new DateInterval("P1D"));
@@ -234,7 +276,7 @@ function fixed_holidays($date) {
   return implode(', ', $holiday_names);
 }
 
-function floating_holidays($date) {
+function floating_holidays($date, $hindu_cal) {
   $day_of_week_position = get_day_of_week_position($date, true);
   $day_of_week_position = get_day_of_week_position($date, true);
   $contents = '';
@@ -393,7 +435,11 @@ $adjusted_date->modify("+1 day");
     $holiday_name = $holiday_name_array[0];
     $holiday_names []= $holiday_name;
   }
+
+
   return implode(', ', $holiday_names);
+
+
 }
 function isJLeapYear($JYear) {
     if ( ((7 * $JYear + 1) % 19) < 7 )
@@ -414,4 +460,104 @@ function is_last_week_of_month($date) {
   $next_saturday_m = $next_saturday->format('m-d');
   //  return "$last_sunday_m $this_saturday_m $next_saturday_m";
   return (($last_sunday->format('m') == $this_saturday->format('m')) && ($this_saturday->format('m') != $next_saturday->format('m')));
+}
+
+function get_hindu_cal($date) {
+  global $ch;
+
+  $filename = $date->format("Y_m_d") . ".txt";
+
+  $uri = "http://www.drikpanchang.com/panchang/day-panchang.html?date=" . $date->format('d/m/Y');
+  curl_setopt($ch, CURLOPT_URL, $uri);
+
+        $output = curl_exec($ch);
+
+  $hindu_cal = array();
+  $hindu_cal['tithi'] = remove_upto(qp($output, 'tr:nth(13) td:nth(2)')->text());
+  $hindu_cal['paksha'] = remove_upto(qp($output, 'tr:nth(12) td:nth(4)')->text());
+  $hindu_cal['nakshatra'] = remove_upto(qp($output, 'tr:nth(15) td:nth(2)')->text());
+  $hindu_cal['yoga'] = remove_upto(qp($output, 'tr:nth(15) td:nth(4)')->text());
+  $hindu_cal['amanta_chandramas'] = remove_amanta(qp($output, 'tr:nth(10) td:nth(4)')->text());
+
+  switch ($hindu_cal['amanta_chandramas']) {
+    case 'Chaitra':
+      $hindu_cal['month_num'] = 1; break;
+    case 'Vaishakha':
+      $hindu_cal['month_num'] = 2; break;
+    case 'Jyaishta':
+      $hindu_cal['month_num'] = 3; break;
+    case 'Ashadha':
+      $hindu_cal['month_num'] = 4; break;
+    case 'Shravana':
+      $hindu_cal['month_num'] = 5; break;
+    case 'Bhadrapada':
+      $hindu_cal['month_num'] = 6; break;
+    case 'Ashwin':
+      $hindu_cal['month_num'] = 7; break;
+    case 'Kartik':
+      $hindu_cal['month_num'] = 8; break;
+    case 'Margarshirsha':
+      $hindu_cal['month_num'] = 9; break;
+    case 'Paush':
+      $hindu_cal['month_num'] = 10; break;
+    case 'Magha':
+      $hindu_cal['month_num'] = 11; break;
+    case 'Phalguna':
+      $hindu_cal['month_num'] = 12; break;
+    defaut:
+      echo "unknown month: " . $hindu_cal['amanta_chaitra'];
+  }
+  switch ($hindu_cal['tithi']) {
+    case 'Pratipada':
+      $hindu_cal['day_num'] = 1; break;
+    case 'Dwitiya':
+      $hindu_cal['day_num'] = 2; break;
+    case 'Tritiya':
+      $hindu_cal['day_num'] = 3; break;
+    case 'Chaturthi':
+      $hindu_cal['day_num'] = 4; break;
+    case 'Panchami':
+      $hindu_cal['day_num'] = 5; break;
+    case 'Shashthi':
+      $hindu_cal['day_num'] = 6; break;
+    case 'Saptami':
+      $hindu_cal['day_num'] = 7; break;
+    case 'Ashtami':
+      $hindu_cal['day_num'] = 8; break;
+    case 'Navami':
+      $hindu_cal['day_num'] = 9; break;
+    case 'Dashami':
+      $hindu_cal['day_num'] = 10; break;
+    case 'Ekadashi':
+      $hindu_cal['day_num'] = 11; break;
+    case 'Dwadashi':
+      $hindu_cal['day_num'] = 12; break;
+    case 'Trayodashi':
+      $hindu_cal['day_num'] = 13; break;
+    case 'Chaturdashi':
+      $hindu_cal['day_num'] = 14; break;
+    case 'Purnima':
+      $hindu_cal['day_num'] = 15; break;
+    case 'Amavasya':
+      $hindu_cal['day_num'] = 15; break;
+    default:
+      echo "Unknown tithi: " . $hindu_cal['tithi'];
+  }
+  if ($hindu_cal['paksha'] == 'Krishna Paksha') {
+    $hindu_cal['day_num'] += 15;
+  }
+  echo sprintf('%02d_%02d', $hindu_cal['month_num'], $hindu_cal['day_num']) . ".txt<br>";
+  return $hindu_cal;
+}
+
+function remove_upto($string) {
+  $pattern = '/(.*) upto (.*)/';
+  $replacement = '${1}';
+  return trim(preg_replace($pattern, $replacement, $string));
+}
+
+function remove_amanta($string) {
+  $pattern = '/(.*) - (.*)/';
+  $replacement = '${1}';
+  return trim(preg_replace($pattern, $replacement, $string));
 }

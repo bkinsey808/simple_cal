@@ -1,0 +1,135 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+
+<html>
+<head>
+	<title>Notes to Javascript Ephemeris Tool</title>
+	<meta name="Author" content="Ole Nielsen">
+	<meta name="Description" content="Javascript Ephemeris Tool usage and copyright notice">
+	<meta name="KeyWords" content="amateur astronomy, astronomical calculation, javascript, moon, planet visibility">
+	<base target=_self>
+	<link rel=stylesheet type="text/css" href="calc.css">
+	<style type="text/css">
+		.tool {font-weight:bold}
+	</style>
+</head>
+
+<body bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#0080ff" alink="#ff00ff">
+
+<p align=center><A HREF="javascript:window.close()">close window</A></p>
+
+<h1>Astrotools history</h1>
+
+<hr>
+
+
+<ul>
+<li>Version 3.4 (2005.06.05)
+	<ul>
+		<li>Altitude limit for star/deepsky visibility enabled for graphical display</li>
+		<li>Transit ordered display of star/deepsky visibility always starts at noon (12:00)</li>
+		<li>Many new deep sky objects added</li>
+		<li>Comet list updated</li>
+		<li>This history file now maintained as separate page</li>
+	</ul>
+<li>Version 3.3 (2005.01.04)
+	<ul>
+		<li>Splitted Astrotools into three separate tools: Ephemeris Tool, Event Tool and Jupiter Tool</li>
+		<li>Functions of old Astrotools divided into Ephemeris Tool and Event Tool</li>
+		<li>Event Tool: Event types individually selectable</li>
+		<li>New: Jupiter Tool is a simulator and event calculator for Jupiter satellites and GRS</li>
+	</ul></li>
+<li>Version 3.2 (2004.10.25):
+	<ul><li>Major improvement on graphical tools, much better looking and very fast</li>
+		<li>Now using CSS positioning in stead of tables and all those small images</li>
+		<li>Added magnitude display to Object Data</li>
+		<li>Added weekday to Visibility</li>
+		<li>Added rise/set indication to TwilightVisibility</li>
+	</ul></li>
+<li>Version 3.1 (2004.10.18):
+	<ul><li>Added comets</li>
+		<li>Added alt and az to positions/text output</li>
+		<li>Added heliocentric distance to data/text output</li>
+		<li>Added display of siderial time in interface</li>
+		<li>Event search now clickable in 'chart' mode, however, output is text only</li>
+		<li>Some cosmetic changes to user interface (styled some buttons etc)</li>
+		<li>Speeded up the code, some tools almost twice as fast</li>
+		<li>Changed link to my homepage to new domain: www.ngc7000.org</li> 
+	</ul></li>
+<li>Version 3.0 (2004.09.21):
+	<ul><li>Major new version</li>
+		<li>New name: Javascript AstroTools (was Skyplanner)</li>
+		<li>User interface significantly changed</li>
+		<li>New text tools for generating ephemeris, lists of events etc</li>
+		<li>Most tools now have a text and a graphical (chart) mode</li>
+		<li>Time input (no longer fixed to 'noon')</li>
+		<li>Julian Day display and input</li>
+		<li>New tools: Search solar/lunar/planetary events, separation between two objects</li>
+		<li>Twilight visibility now supports selectable Sun depression angle</li>
+		<li>Star/Deep sky object list/charts now optionally sorted according to R.A. and with altitude filter</li>
+		<li>Fixed error in rise/set calculations for Moon, parallax was wrong</li>
+		<li>Increased accuracy of lunar calculations</li>
+	</ul>
+</li>
+<li>Version 2.3 (2004.01.04):
+	<ul><li>Another facelift of user interface, changed colour scheme</li>
+		<li>Made 'Twilight Altitude' usable with all objects (was only Mercury and Venus)</li>
+		<li>Changed some colours in Visibility charts</li>
+		<li>Fixed bug in Visibility (an occasionally missed moonrise)</li>
+	</ul>
+</li>
+<li>Version 2.2 (2003.07.27 ): 
+	<ul><li>Changed user interface again. Choose object, click on function (just as in pre v2.0!)</li>
+		<li>Visibility and Altitude of selected star or deep sky object via User Object</li>
+		<li>Added several deep sky objects</li>
+		<li>Corrected longitude of Madrid and Malaga</li>
+	</ul>
+</li>
+<li>Version 2.1 (2003.03.19 ):
+	<ul><li>Completely rewritten code for visibility charts, higher resolution and 10 times faster</li>
+		<li>All other charts 2 to 3 times faster</li> 
+		<li>Improved precision, now using Paul Schlyter's method for planetary calculations</li>
+		<li>Added user object</li>
+	</ul>
+</li>
+<li>Version 2.0 (2003.02.12):
+	<ul><li>Major upgrade</li>
+	<li>Changed user interface, now first choose desired output and then click desired object</li>
+	<li>New charts for illumination, distance, declination, ecliptic longitude and elongation</li>
+	<li>Restyled altitude chart, show planet positions as numbered "balls" in stead of coloured squares</li>
+	<li>Display of additional information (azimuth, right ascencion etc) as numbers on some charts</li>	
+	</ul>
+</li>
+<li>Version 1.2 (2003.01.28):
+	<ul><li>Improved daylight saving time handling: DST check box, DST status saved in cookie, DST determined when reading time zone from system clock</li>
+	<li>Sign of time zone offset reversed! (I found negative time zones for places each of Greenwich non-logical)</li></ul>
+</li>
+<li>Version 1.1 (2003.01.22):
+	<ul><li>Added cookie to store home location. </li>
+	<li>Improved Mercury/Venus altitude display. </li>
+	<li>Added transit times to some charts. </li>
+	<li>The automatic DST correction for date updates has been (temporarily?) disabled.</li></ul>
+</li>
+<li>Version 1.0 (2002.08.31):
+	<ul><li>First release of Skyplanner</li></ul>
+</li>
+</ul>
+
+<hr>
+<SCRIPT LANGUAGE="JavaScript">
+<!-- Begin
+
+domain = "planet.nl";
+user = "astronomi";
+
+document.write('<p>Contact <a href=\"mailto:' + user + '@' + domain + '\">');
+document.write('Ole Nielsen' + '</a></p>');
+// End -->
+</SCRIPT>
+
+<p>Home page: <a href="http://www.ngc7000.org/" target=_top>Ole's Astronomy Site</a></p>
+
+<p>If you came here via a search engine: <a href="astrotools.html" target=_top>AstroTools</a></p>
+
+</body>
+
+</html>

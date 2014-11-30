@@ -1,0 +1,77 @@
+Measurements on v1.2
+====================
+31/1-2003 Rijswijk
+
+				Moon	Jup	Mer/Ven	Pl.Alt	Stars
+				21days	21days	21days	10	66	
+---------------------------------------------------------------------
+Siemens EPO + NS4.61:		22.5	27.0	5.0	25.5	31.0	 
+Siemens EPO + Mozilla1.21:	11.5	13.5	6.0	32.0	22.0
+P4 2.4GHz + Mozilla1.1:		 4.0	 4.5 	1.8	 9.0	 7.5
+P4 2.4GHz + IE6:		 5.5	 6.0	3.5	19.0	14.5
+
+Tiles:				2520	2520	2100	6468	7920
+
+
+
+v2.0 (17.02.2003)
+				Moon	Jup	Mer/Ven	Pl.Alt	Stars	Dec (all)
+				21days	21days	21days	10	66	21days
+---------------------------------------------------------------------------------
+Siemens EPO, NS4.61		24,5	28,5	4,0	14,0	32,0
+Siemens EPO, Moz 1.21		13.0	14,0	5,0	14,0	25,0
+P4 + Moz. 1.1			3,5	4,0	1,5	4,0	7,0
+P4 + IE6			5,5	6,0	3,0	8,0	14,0
+Cel 500 + Moz 1.1		16.0	18.0	8.0	28.5	61.0	10.0
+Cel 500 + NS4.77		12.0	14.0	3.0	12.0	29.0	5.0
+Cel 500 + IE5.0			21.5	21.0	14.0	hang!	58.0	hang!
+Athlon1200 - IE5.5		9.0	9.0	6.0	hang!	26.0	7.0
+
+
+v2.1 (16.03.2003)
+(using timer alert box, best of three tries)
+(output window doesn't exist before start)
+				Moon	Jup	Mer/Ven	Pl.Alt	Stars	Dec (all)
+				21days	21days	21days	10	66	21days
+---------------------------------------------------------------------------------
+Siemens EPO, NS4.61		3.15	3.05	2.36	8.78	6.91	4.34	
+Siemens EPO, Moz 1.21		1.98	1.92	2.57	5.95	3.86	3.68
+P4 + Moz. 1.1			0.59	0.57	0.69	1.78	1.18	1.02
+P4 + IE6			0.75	0.77	1.43	3.79	1.71	2.16
+Cel 500 + Moz 1.1		2.03	1.97	3.02	7.47	4.12	4.40
+Cel 500 + NS4.77		1.37	1.32	1.71	5.93	3.30	2.75
+Cel 500 + IE5.0			3.07	2.96	7.80	20.82*	7.91	4.07
+Athlon1200 - IE5.5		
+
+Opening of output window accounts for approx 0.15 sec if not already open
+*) sometimes hangs on this test
+
+
+v3.0 (13.10.2004)
+				Moon	Jup	Twl/Ven	Pl.Alt	Stars	Dec (all)
+				21days	21days	21days	10	66	21days
+---------------------------------------------------------------------------------
+P4 + Moz. 1.7.3			1.02	0.81	0.89	2.77	1.77	1.51
+
+
+New Tests:
+==========
+
+v3.0 (13.10.2004)
+				Grph	Grph	Grph	Grph	Grph	Txt	Txt	Txt	Txt	Txt	Search	
+				Daily	Daily	Twl	Alt	Decl	Daily	Daily	Twl	Alt	Posi	6 mths
+2 mths excl Alt/az/Srch		Moon	Jup	Ven	Jup.	Jup.	Moon	Jup	Ven	Jup.	Jup.	pl/Moon
+-----------------------------------------------------------------------------------------------------------------------
+P4 + Moz. 1.7.3			2.49	2.17	2.25	1.86	2.46	0.99	0.84	0.72	0.38	0.48	3.72
+P4 + Firefox 1.0PR		1.95	1.78	2.00	1.71	2.36	0.68	0.58	0.49	0.27	0.36	2.93
+
+
+v3.2 (24.10.2004)
+				Grph	Grph	Grph	Grph	Grph	Txt	Txt	Txt	Txt	Txt	Search	
+				Daily	Daily	Twl	Alt	Decl	Daily	Daily	Twl	Alt	Posi	6 mths
+2 mths excl Alt/az/Srch		Moon	Jup	Ven	Jup.	Jup.	Moon	Jup	Ven	Jup.	Jup.	pl/Moon
+-----------------------------------------------------------------------------------------------------------------------
+P4 + Moz. 1.7.3			1.83	1.61	0.58	0.36	0.40	0.95	0.77	0.71	0.43	0.50	3.95
+P4 + Firefox 1.0PR		1.38	1.21	0.40	0.26	0.29	0.67	0.57	0.50	0.27	0.35	2.88
+P4 + IE6			1.42	1.22	0.40	0.22	0.25	0.91	0.81	1.23	0.62	1.20	2.41
+

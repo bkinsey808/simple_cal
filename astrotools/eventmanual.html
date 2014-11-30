@@ -1,0 +1,182 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+
+<html>
+<head>
+	<title>Event Tool - Manual</title>
+	<meta name="Author" content="Ole Nielsen">
+	<meta name="Description" content="Javascript Astrotools Event Tool usage and copyright notice">
+	<meta name="KeyWords" content="amateur astronomy, astronomical calculation, javascript, seasons, equinox,
+solstice, lunar phases, conjunction, opposition, elongation, perihelion, perigee, apogee">
+	<base target=_self>
+	<link rel=stylesheet type="text/css" href="calc.css">
+	<style type="text/css">
+		.tool {font-weight:bold}
+	</style>
+</head>
+
+<body bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#0080ff" alink="#ff00ff">
+
+<p align=center><A HREF="javascript:window.close()">close window</A></p>
+
+<h1>Event Tool Manual</h1>
+
+<p align=center><a href="#usage">Usage</a> - <a href="#browser">Browser notes</a> -
+<a href="#source">Source</a> - <a href="#copyright">Copyright notice</a> - 
+<a href="history.html">History</a> - <a href="glossary.html">Glossary of astronomical terms</a></p>
+
+<hr>
+
+<p>Event Tool searches for various solar, lunar and planetary events. The following events can be
+detected by Event Tool: Solstices, equinoxes, peri/aphelion, lunar phases, lunar perigee/apogee, inferior/superior 
+conjunctions of Mercury and Venus, solar conjunctions/oppositions of outer planets, greatest elongations
+of Mercury and Venus, mutual conjunctions involving two planets or the Moon and a planet.</p>
+
+<HR>
+
+<h3><a name="usage">Usage</a></h3>
+
+<p>Brief instructions: <br>
+To use Ephemeris Tool set your location and time zone, specify start date and 
+desired time span. Mark the desired events and click 'Search'.</p>
+
+<p><b>Important</b><br>
+The search can take a considerable time depending on the speed of your computer, the browser used and 
+the requested time span. Don't panic if it looks like your browser hangs. It is just thinking! 
+Newer versions of Mozilla (and Firefox) may occasionally show an alert box  
+warning that "A script is causing mozilla to run slow" and offering you to abort it. 
+Just click "Cancel" to continue running the script.</p>
+
+<p>For help concerning the Location and Date and Time interfaces, please see the help manual for 
+Ephemeris Tool. Event Tool shares the observatory cookie with other tools
+in the Astrotools suite</p> 
+
+<h4>Events</h4>
+
+<p>Check the checkboxes for all desired events before clicking Search. The search may take some time as mentioned
+above. The results will be presented in a new window.</p>
+
+<p>The 'Seasons' and 'Moon phases' buttons are shortcuts for searching for astronomical seasons and lunar phases
+independent of the checked events.</p>
+ 
+<p>See the <a href="glossary.html" target=_blank>glossary</a> 
+if you need explanations for the terms used</p>
+
+<hr>
+<h4>Precision</h4>
+<p>The program achieves sufficient accuracy for normal observational purposes. Moon phases and conjunctions
+with planets are accurate to
+a few minutes from the correct values. 
+The uncertainties on conjunction times involving the slower Sun and planets are greater. The positions used for
+calculating events have an accuracy of about 2 arcminutes and the uncertainty is related to the time it takes
+the planet or Sun to move this angle.
+The times for peri/aphelions and greatest elongations can be off by a few hours from the values calculated
+using more precise methods.</p>
+<p>Event Tool uses the following theories for calculating planetary and lunar positions: 
+Planetary calculations are based on the formulae in 
+<a href="http://www.stjarnhimlen.se/english.html">Paul Schlyter's</a> article 
+<a href="http://www.stjarnhimlen.se/comp/ppcomp.html">"Computing planetary positions"</a>. 
+He claims a precision of about 2 arcminutes on positions. 
+Lunar calculations use a truncated version of the method presented in "Astronomical Algorithms", 
+2nd edition by Jean Meeus. Lunar positions should be good to about 1 arcminute. 
+"Astronomical Algorithms" is a strongly recommended book for anybody interested in performing astronomical
+calculations. It has helped me with various formulae for translating between 
+coordinate systems, calculating rise and set times and much more. 
+Please note that the theories only provide the specified precision between 1000 AD and 3000 AD or so. 
+Outside this time interval errors will grow quickly.</p>
+ 
+<hr>
+<h3><a name="browser">Browser notes</a></h3>
+
+<p>Event Tool is demanding on the javascript interpreter of the browser and requires CSS2 support. 
+Older browsers may crash or report errors. Most recent browsers should be able to run Event Tool. 
+Recommended browsers are Mozilla 1.7, Firefox and Internet Explorer 6 or better. 
+The script has been tested on various computers 
+with the following browsers running under Windows 98 SE, ME, 2000 and XP:<br>
+<b>Mozilla 1.7.3</b>, <b>Firefox 1.0</b> and <b>Internet Explorer 6</b></p>
+
+<p>Speed: The speed of Event Tool depends on the computer, browser and search time span. 
+Time spans of more than a couple of months may require a considerable time to execute (and possibly
+alert boxes in some browsers as mentioned above).   
+</p>
+
+<hr>
+
+<h3><a name="copyright">Copyright Notice</a></h3>
+
+<p>Astrotools and all its subcomponents like Event Tool have been released under the GNU 
+General Public Licence (GNU GPL).</p>
+
+<pre>
+    Copyright (C) 2002-2005  Ole Nielsen
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+</pre>
+
+<p>Please see <a href="gpl.txt">gpl.txt</a> for the full text of the GNU GPL.</p>
+
+<p>Please also visit the 
+<a href="http://www.peter-hayes.freeserve.co.uk/ephemeris/" target=_top>Javascript Ephemeris</a> 
+web site of Peter Hayes. His site and javascript code has been the original inspiration for my application. Although the
+majority of my code is new or completely rewritten,  
+some code fragments can still be traced back to his original code. Any code provided by Peter Hayes 
+is copyright &copy; Peter Hayes 1999-2001.</p>
+
+<hr>
+
+<h3><a name="source">Source</a></h3>
+
+<p>You can run Astrotools off-line from your own hard disk. 
+Download <a href="astrotools.zip">astrotools.zip</a> to your computer and unzip the archive 
+to a folder of your choice. Open "astrotools2.html" in your browser 
+to start AstroTools (In Windows Explorer you can also double click the file to open it 
+in your default browser). Don't forget to bookmark this file in your browser for later use.</p>
+
+<p>You may redistribute Astrotools under the terms of the GNU GPL (see above).
+You must include all files including the text of the GNU GPL (gpl.txt).</P>
+
+<!--
+<hr>
+
+
+<h3><a name="history">Update history</a></h3>
+
+<ul>
+<li>Version 1.0 (2005.01.04):
+	<ul><li>Event Tool made a separate tool, used to be a part of the old AstroTools/Ephemeris Tool</li>
+		<li>Individual events can be selected using checkboxes</li>
+	</ul>
+</li>
+</ul>
+-->
+
+<hr>
+<SCRIPT LANGUAGE="JavaScript">
+<!-- Begin
+
+domain = "planet.nl";
+user = "astronomi";
+
+document.write('<p>Contact <a href=\"mailto:' + user + '@' + domain + '\">');
+document.write('Ole Nielsen' + '</a></p>');
+// End -->
+</SCRIPT>
+
+<p>Home page: <a href="http://www.ngc7000.org/" target=_top>Ole's Astronomy Site</a></p>
+
+<p>If you came here via a search engine: <a href="astrotools.html" target=_top>AstroTools</a></p>
+
+</body>
+
+</html>

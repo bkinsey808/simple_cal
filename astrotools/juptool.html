@@ -1,0 +1,210 @@
+<!doctype html public "-//w3c//dtd html 4.01 transitional//en">
+
+<!-- please read copyright blurb at end of this file -->
+
+
+<html>
+<head>
+	<title>Javascript AstroTools - Jupiter Tool</title>
+	<meta http-equiv="content-type" content="text/html">
+	<meta http-equiv="charset" content="ISO-8859-1">
+	<meta name="Author" content="Ole Nielsen">
+	<meta name="Description" content="Javascript calculation and display of ephemerides in graphical or text format">
+	<meta name="KeyWords" content="astronomical calculation, ephemeris, javascript, sun, twilight, moon, planet, planets, visibility, stars, deep sky, skyplanner">
+	<base target=_top>
+	<link rel=stylesheet type="text/css" href="calc.css">
+	<style type="text/css">
+	P,H1,h3,H4 {text-align: center}
+	.jupif {padding: 2px 3px; background:black; color:white; font-size:13px; text-align:center; border:1px gray;}
+	.jupbut {background:#333; color:white; font-size:11px; margin:2px}
+	.inputfield {background:#ddd; font-size: 10px; margin:2px}
+	.tables {margin:15px auto 0px; border:2px groove #999; width:600px;}
+	</style>
+
+<script language="JavaScript" src="observer.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="datetime.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="cookie.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="util.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="math.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="juphandlers.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="jupdraw.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="jupiter.js" TYPE="text/javascript"></script>
+
+<script language=JavaScript type=text/javascript>
+var timer_on = false;		// if true show timer alert box, for measuring performance
+var debug = true;
+		
+// all form handling functions moved to handlers.js
+</script>
+</head>
+
+<body onLoad="getCookie('HOME',observer)">
+
+<p style="font-size:larger">Javascript AstroTools</p>
+
+<h1>Jupiter Tool</h1>
+
+<noscript>
+<p><b><font size="+2">Please enable JavaScript to use this page.</font></b></p>
+</noscript>
+
+<p><a href="jupmanual.html" target=_blank>Help</a> - 
+<a href="jupmanual.html" target=_blank>IMPORTANT NOTE FOR IE6 USERS</a></p>
+<table align="center" border="1" cellpadding="0" cellspacing="0"><tr><td> <!-- the table is needed for IE6 centering -->
+<div id="container" style="position:relative; height:220px; width:700px; margin-left:0px auto; padding:0px;"> 
+<div id="bgr" style="position:absolute; width: 700px; height:220px; background:black;"></div>
+<script language=JavaScript type=text/javascript>
+j_init();	// make initial drawing
+</script>
+</div>
+</td></tr></table>
+
+<form name="table1">
+<table class="tables" align="center" border="1" cellpadding="0" cellspacing="0">
+<tr>
+	<td class="jupif">
+		Date <INPUT type="text" class="inputfield" size="10" name="local_date" value="" 
+				onchange="setDateTime(0)">&nbsp;&nbsp;
+		Time <INPUT tye="text" class="inputfield" size="6" name="local_time" value="" 
+				onchange="setDateTime(0)"><br>
+		<input class="jupbut" type="button" name="fromrtc" value="Now" onclick= "setNow()">
+		<input class="jupbut" type="button" name="setnoon" value="Midnight" onclick= "set12(false)">
+		<input class="jupbut" type="button" name="setnoon" value="Noon" onclick= "set12(true)"> <br>
+		<input class="jupbut" type="button" name="incrdecr" value="< 12 hour" onclick= "setDateTime(-12*60)">
+		<input class="jupbut" type="button" name="incrdecr" value="12 hour >" onclick= "setDateTime(12*60)"><br>
+		<input class="jupbut" type="button" name="incrdecr" value="< 1 hour" onclick= "setDateTime(-60)">
+		<input class="jupbut" type="button" name="incrdecr" value="1 hour >" onclick= "setDateTime(60)"><br>
+		<input class="jupbut" type="button" name="incrdecr" value="< 10 min" onclick= "setDateTime(-10)">
+		<input class="jupbut" type="button" name="incrdecr" value="10 min >" onclick= "setDateTime(10)"><br>
+		<input class="jupbut" type="button" name="incrdecr" value="< 1 min" onclick= "setDateTime(-1)">
+		<input class="jupbut" type="button" name="incrdecr" value="1 min >" onclick= "setDateTime(1)">
+	</td>
+	<td class="jupif">
+		<input class="jupbut" type="button" name="zoom1" value="Zoom out" 
+				onclick= "zoom=false; drawJup(); updateDisplay()">
+		<input class="jupbut" type="button" name="zoom1" value="Zoom in" 
+				onclick= "zoom=true; drawJup(); updateDisplay()"><br><br>
+		<input class="jupbut" type="button" name="animate" value="<< Animate" onclick= "startAnim(true)">
+		<input class="jupbut" type="button" name="animate" value="STOP" onclick= "anim=false">
+		<input class="jupbut" type="button" name="animate" value="Animate >>" onclick= "startAnim(false)"><br>
+		<select name="anispeed" class="inputfield" onChange="if (anim) startAnim(speed<0)">
+		<option>Real-time</option><option>1 min/sec</option><option>3 min/sec</option><option>10 min/sec</option>
+		<option>30 min/sec</option><option selected>1 hour/sec</option>
+		<option>3 hours/sec</option><option>10 hours/sec</option><option>1 day/sec</option>
+		</select>
+		<input class="jupbut" type="button" name="slower" value="Slower" onclick= "changeSpeed(false)">
+		<input class="jupbut" type="button" name="faster" value="Faster" onclick= "changeSpeed(true)"><br>
+		<br>
+		Longitude of GRS:
+		<input type="text" class="inputfield" size="2" name="grs" value="" 
+				onchange="jupiter.grs_lon=parseInt(tbl.grs.value); updateDisplay();">
+	</td>
+</tr>
+</table>
+
+<table class="tables" align="center" border="1" cellpadding="0" cellspacing="0">
+<tr>
+	<td class="jupif">
+		<input class="jupbut" type="button" name="search" value="List Events" 
+			onclick= "listEvents(tbl.grs_on.checked)">
+		<select name="spanselect" class="inputfield">
+		<option>1 day</option><option>3 days</option><option selected>1 week</option>
+		<option>2 weeks</option><option>1 month</option><option>2 months</option>
+		</select>
+		<input type="checkbox" name="grs_on">Show crossings of GRS
+	</td>
+</tr>
+</table>
+
+<table class="tables" align="center" border="1" cellpadding="0" cellspacing="0">
+<tr>
+	<td class="jupif"> Observatory:
+		<input class="inputfield"  type="text" size="17" name="Placename" onchange="updateplace(false)">
+	 &nbsp;&nbsp;Latitude: 
+	 	<input class="inputfield"  type="text" size="6" name="Latitude" onchange="updatell()">
+	 	<select class="inputfield"  name="North" onchange= "updatell()">
+	 		<option>N</option><option>S</option>
+	 	</select>
+	 &nbsp;&nbsp;Longitude: 
+		<input class="inputfield"  type="text" size="6" name="Longitude" onchange="updatell()">
+	 	<select class="inputfield"  name="West" onchange= "updatell()">
+	 		<option>W</option><option>E</option>
+	 	</select>
+	</td>
+</tr>
+<tr>
+	<td class="jupif">Time zone: UTC 
+		<INPUT class="inputfield"  class="if" type="text" size="6" name= "ut_offset"  value="" onchange="setUTCOff()">
+		<input class="jupbut" type="checkbox" name="DSTactive" value="yes" onclick="setTZ(true)"> Daylight Saving Time
+		<input class="jupbut" type="button" name="fromrtc" value="Set Time Zone from computer" onclick= "setTZ(false)">
+	</td>
+</tr>
+<tr>
+	<td class="jupif">or select from: 
+	<!-- The Place select is altered below by JavaScript -->
+		<select class="inputfield"  name="Place" onchange= "updateplace(true)">
+			<option>Select your home location</option>
+			<option>User location</option>
+		</select>&nbsp;&nbsp;&nbsp;
+		<input class="jupbut" type="button" name="setcookie" value="Store (in cookie)" onclick= "setCookie('HOME',observer)">
+		<input class="jupbut" type="button" name="getcookie" value="Recall" onclick= "getCookie('HOME',observer)">
+		<input class="jupbut" type="button" name="delcookie" value="Delete cookie"  onclick= "deleteCookie('HOME')">
+	</td>
+</tr>
+
+</table>
+</form>
+
+
+</center>
+
+<!-- Initialize the tables in the form --> 
+
+<script type="text/javascript" language="JavaScript">
+
+var tbl=document.table1; /* used globally to reference form elements */
+
+tbl.Place.options.length=0;
+for (var i=0; i<atlas.length; i++) {
+	tbl.Place.options[tbl.Place.options.length]=new Option(atlas[i].name);
+}
+reset1();
+
+</script>
+
+<!-- <p>Jupiter Tool Version 1.0 (2005.01.04)</p> -->
+
+<p><a href="jupmanual.html#copyright" target=_blank>Copyright &copy; Ole Nielsen 2004-2005. 
+Astrotools is freeware under the terms of the GNU GPL</a></p>
+
+<hr>
+<p>Back to <a href="astrotools2.html">Astrotools menu</a></p>
+<p>My web site: <a href="http://www.ngc7000.org/">Ole's Astronomy Site</a></p>
+
+<!--
+Astrotools and all its subcomponents like Jupiter Tool have been released under the GNU 
+General Public Licence (GNU GPL).
+
+    Copyright (C) 2004  Ole Nielsen
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Copyright (C) 2004  Ole Nielsen
+
+My e-mail address is   a s t r o n o m i   a t   p l a n e t   d o t   n l.
+-->
+
+</body>
+</html>
+

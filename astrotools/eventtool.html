@@ -1,0 +1,278 @@
+<!doctype html public "-//w3c//dtd html 4.01 transitional//en">
+
+<!-- please read copyright blurb at end of this file -->
+
+<html>
+<head>
+	<title>Javascript AstroTools: Event Tool</title>
+	<meta http-equiv="content-type" content="text/html">
+	<meta http-equiv="charset" content="ISO-8859-1">
+	<meta name="Author" content="Ole Nielsen">
+	<meta name="Description" content="Javascript tool for searching solar, lunar and planetary events (conjunctions, oppositions, lunar phases, apo/perigee, max elongations etc)">
+	<meta name="KeyWords" content="astronomical calculation, javascript, sun, moon, planet, events,
+lunar phase, equinox, solstice, perigee, apogee, conjunction, opposition, elongation">
+	<base target=_top>
+	<link rel=stylesheet type="text/css" href="calc.css">
+	<style type="text/css">
+	P,H1,h3,H4 {text-align: center}
+	.title1 {font-weight: bold; color:#000; font-size:16px}
+	TD.input1 {background-color:#ee9; padding:3px}
+	input.if {font-size: 13px;}
+	.interface {margin: 0px; border: 0px; padding: 2px; font-size:13px;}
+	.button {background:#ccc; color:black; font-size:11px;}
+	.inputfield {background:#eee; font-size: 10px;}
+	.inputfield1 {background:#ee9; font-size: 10px;}
+	.innertable {border:0px; width:600px;}
+	</style>
+
+<script language="JavaScript" src="observer.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="datetime.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="cookie.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="planets.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="sunmoon.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="makeevent.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="util.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="math.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="eventhandlers.js" TYPE="text/javascript"></script>
+
+<script language=JavaScript type=text/javascript>
+<!--
+
+var timer_on = false;		// if true show timer alert box, for measuring performance
+var debug_on = false;		
+
+var datecount = new Array(1,2,3,5,7,10,14,18,21,28,-1,-2,-3,-6,-12,-24,-60,-120,-240,-600,-1200);
+var daystep = new Array(1/24.0,1/12.0,1/6.0,0.25,0.5,1,2,3,4,5,7,10,14,21,27.3217,28,29.5306,-1,-2,-3,-6,-12,-24,-60);
+var objlist = new Array(9,10,0,1,3,4,5,6,7,15,20,100);	// object numbers (object options)
+var SEL_EV=0, SEASON=1, PHASE=2, ALL_EV=3;
+
+// -->
+</script>
+</head>
+
+<body onLoad="getCookie('HOME',observer)">
+
+<h3>Javascript AstroTools</h3>
+<h1>Event Tool</h1>
+
+<h4>Tool for searching solar, lunar and planetary events</h4>
+<hr>
+
+<noscript>
+<p><b><font size="+2">Please enable JavaScript to use this page.</font></b></p>
+</noscript>
+
+<p><a href="eventmanual.html" target=_blank>Help</a></p>
+<center>
+
+<form name="table1">
+<!-- the form object is globally referenced through the variable tbl -->
+<table border=1 cellpadding="3">
+<tr>
+	<td class="title1" width=100>Location and time zone</td>	
+	<td>
+<table class="innertable" cellspacing="0">
+<tr>
+	<td class="interface" width="34%"> Observatory <input class="inputfield1"  type="text" size="17" name="Placename" onchange="updateplace(false)"></td>
+	<td class="interface">Time zone: UTC 
+		<INPUT class="inputfield1"  class="if" type="text" size="6" name= "ut_offset"  value="" onchange="setUTCOff()"></td>
+	<td class="interface">Select from: 
+	<!-- The Place select is altered below by JavaScript -->
+		<select class="inputfield"  name="Place" onchange= "updateplace(true)">
+			<option>Select your home location</option>
+			<option>User location</option>
+		</select></td>
+</tr>
+<tr>
+	 <td class="interface">Longitude 
+		<input class="inputfield1"  type="text" size="6" name="Longitude" onchange="updatell()">
+	 	<select class="inputfield1"  name="West" onchange= "updatell()">
+	 		<option>W</option><option>E</option>
+	 	</select>
+	</td>
+	<td class="interface">
+		<input class="button" type="checkbox" name="DSTactive" value="yes" onclick="setTZ(true)"> Daylight Saving Time</td>
+	<td class="interface">
+		<input class="button" type="button" name="setcookie" value="Store (in cookie)" onclick= "setCookie('HOME',observer)"></td>
+</tr>
+<tr>
+	<td class="interface">Latitude &nbsp;
+	 	<input class="inputfield1"  type="text" size="6" name="Latitude" onchange="updatell()">
+	 	<select class="inputfield1"  name="North" onchange= "updatell()">
+	 		<option>N</option><option>S</option>
+	 	</select></td>
+	<td class="interface"><input class="button" type="button" name="fromrtc" value="Set Time Zone from computer" onclick= "setTZ(false)">
+	</td>
+	<td class="interface">
+		<input class="button" type="button" name="getcookie" value="Recall" onclick= "getCookie('HOME',observer)">
+		<input class="button" type="button" name="delcookie" value="Delete cookie"  onclick= "deleteCookie('HOME')">
+	</td>
+</tr>
+
+</table>
+	</td>
+</tr>
+
+<tr><td  class="title1">Start Date</td>	
+	<td>
+<table class="innertable"  cellspacing="0">
+	<tr>
+		<td class="interface" width="34%">
+			Date <INPUT type="text" class="inputfield1" size="10" name="local_date" value="" onchange="setDateTime(0)">
+		</td>	
+		<td class="interface">
+			<input class="button" type="button" name="incrdecr" value="-7" onclick= "setDateTime(-7*1440)">
+			<input class="button" type="button" name="incrdecr" value="-1" onclick= "setDateTime(-1440)">
+			<input class="button" type="button" name="incrdecr" value="+1" onclick= "setDateTime(1440)">
+			<input class="button" type="button" name="incrdecr" value="+7" onclick= "setDateTime(7*1440)"> day(s)</td>
+		<td class="interface">
+			<input class="button" type="button" name="fromrtc" value="Now" onclick= "setNow()">
+		</td>
+	</tr>
+<!-- 	<tr>
+		<td class="interface">
+			Time <INPUT type="text" class="inputfield1" size="5" name="local_time" value="" onchange="setDateTime(0)">
+		</td>
+		<td class="interface">
+			<input class="button" type="button" name="incrdecr" value="-1 hour" onclick= "setDateTime(-60)">
+			<input class="button" type="button" name="incrdecr" value="+1 hour" onclick= "setDateTime(60)"></td>
+		<td class="interface">
+			<input class="button" type="button" name="setnoon" value="Midnight" onclick= "set12(false)">
+			<input class="button" type="button" name="setnoon" value="Noon" onclick= "set12(true)"> 
+		</td>
+	</tr>
+-->
+</table>
+	</td>
+</tr>
+
+<tr><td class="title1">Time span</td>	
+	<td>
+<table class="innertable"  cellspacing="0">
+	<tr>
+		<td  class="interface" width="34%">Time span: 
+			<select name="Times" class="inputfield1">
+			<option>1 day</option><option>2 days</option><option>3 days</option><option>5 days</option>
+			<option>7 days</option><option>10 days</option><option>14 days</option><option>18 days</option>
+			<option>21 days</option><option>28 days</option><option selected>1 month</option>
+			<option>2 months</option><option>3 months</option><option>6 months</option>
+			<option>1 year</option><option>2 years</option><option>5 years</option><option>10 years</option>
+			<option>20 years</option><option>50 years</option><option>100 years</option>
+			</select> </td>
+		<td class="interface"> 
+		</td>
+	</tr>
+	</table>
+	</td>
+</tr>
+
+
+<tr>
+	<td class="title1">Events</td>	
+	<td>
+		<table cellspacing="6" align=left>
+			<tr>
+				<td>Solar events:</td>
+				<td><input type="checkbox" name="season" checked>Seasons&nbsp;
+					<input type="checkbox" name="perihelion">Peri/aphelion&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Lunar events:</td>
+				<td><input type="checkbox" name="phase" checked>Phases&nbsp;
+					<input type="checkbox" name="perigee">Peri/apogee&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Planetary events:</td>
+				<td>Conjunctions with: <input type="checkbox" name="solconj" checked>Sun&nbsp;
+					<input type="checkbox" name="moonconj">Moon&nbsp;
+					<input type="checkbox" name="planconj">Planets&nbsp;</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="checkbox" name="elong">Greatest elongation&nbsp;
+					<input type="checkbox" name="quadrature">Quadrature&nbsp;
+					<!--<input type="checkbox" name="pl_peri">Peri/aphelion&nbsp;--></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="button" class="button" value="Select All" name="ss" onclick="setAll(true)">
+					<input type="button" class="button" value="Clear All" name="ss" onclick="setAll(false)">
+				</td>
+			</tr>
+			<tr>
+				<td><input type="button" class="tbut" value="Search" name="search" onclick="switchboard(SEL_EV)"></td>
+				<td><input type="button" class="button" value="Seasons" name="ss" onclick="switchboard(SEASON)">
+					<input type="button" class="button" value="Moon Phases" name="ss" onclick="switchboard(PHASE)">
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>
+</table>
+</form>
+
+</center>
+
+<!-- Initialize the tables in the form --> 
+
+<script type="text/javascript" language="JavaScript">
+
+var tbl=document.table1; /* used globally to reference form elements */
+
+tbl.Place.options.length=0;
+for (var i=0; i<atlas.length; i++) {
+	tbl.Place.options[tbl.Place.options.length]=new Option(atlas[i].name);
+}
+reset1();
+
+</script>
+
+<!-- <p>Event Tool version 1.0 (2005.01.04)</p> -->
+<p><a href="toolsmanual.html#copyright" target=_blank>Copyright &copy; Ole Nielsen 2002-2005 </a></p>
+
+<hr>
+<p>Back to <a href="astrotools2.html">Astrotools menu</a></p>
+<p>My web site: <a href="http://www.ngc7000.org/">Ole's Astronomy Site</a></p>
+
+<!--
+Astrotools and all its subcomponents like Event Tool have been released under the GNU 
+General Public Licence (GNU GPL).
+
+    Copyright (C) 2002-2005  Ole Nielsen
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Copyright (C) 2004  Ole Nielsen
+
+My e-mail address is   a s t r o n o m i   a t   p l a n e t   d o t   n l.
+
+The this programme was inspired by Javascript Ephemeris by Peter Hayes. 
+Some fragments of his code can still be found here and there. 
+For any code he has contributed the following copyright statement applies:
+
+******************************************************************************
+ Copyright Peter Hayes 1999-2001
+ This code may be copied for personal use subject to the following conditions.
+ 1) I accept no liability for coding errors.
+ 2) This notice and the references and credits in the notes page are retained.
+ 3) Some code was provided by other authors, please recognise their contribution.
+ Please keep me informed of any errors and suggestions for improvements.
+ My work e-mail address is  h a y e s   a t   c r a y   d o t   c o m (edited to avoid spam).
+ See the company pages at www.cray.com to find out who we are and what we do.
+******************************************************************************
+-->
+
+</body>
+</html>
+

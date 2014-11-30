@@ -1,0 +1,20 @@
+body {
+	color:#fff; 
+	background-color:#444; 
+	margin:10px 10px 10px 10px;
+	font-family: "Arial","Helvetica";
+	}
+H1 {color:#fff; text-align:center}
+H2 {font-weight:bold; color:#fff; margin-top:5px; text-align:center}
+H3 {font-weight:bold; color:#fff; margin-top:18px}
+H4 {font-weight:bold; color:#fff; margin-top:13px}
+H5 {color:#000}
+P,TD,UL,CENTER, SPAN  {font-size:13px;}
+TABLE,TD {background-color:#bbb; color:#000; }
+TH {font-weight:bold; color:#fff; font-size:15px}
+A:link {color:#2cf; text-decoration: none}
+A:visited {color:#4cf; text-decoration: none}
+A:hover {color:#f44; text-decoration: none}
+.new {color:#ff0; font-style:italic; font-size:12px}
+.tbut {width: 150px; font-weight: bold; background-color: #cfc;}
+input.text1 {color: #f00;}

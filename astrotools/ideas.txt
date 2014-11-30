@@ -1,0 +1,32 @@
+New tools:
+
+Saturn tool like Jup tool
+
+Mars tool
+
+Moon tool
+
+Skyplot
+
+Conjunction sim (incl eclipses?)
+
+Precess tool
+
+
+Jupiter Tool:
+- mirror and invert
+- extra data
+- wavy diagram
+- graphical event lines
+
+Ephem tool:
+- separation graph
+- alt-az graph horizontal
+- the same for other graphs
+- better accuracy on Sun, Moon
+- change comet element reader (eval -> parsefloat)
+- Visibility chart start at other times than noon
+- show only morning or evening twilight diagram?
+
+
+Event Tool:

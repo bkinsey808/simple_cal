@@ -1,0 +1,374 @@
+<!doctype html public "-//w3c//dtd html 4.01 transitional//en">
+
+<!-- please read copyright notice at end of this file -->
+
+<html>
+<head>
+	<title>Javascript AstroTools: Ephemeris Tool</title>
+	<meta http-equiv="content-type" content="text/html">
+	<meta http-equiv="charset" content="ISO-8859-1">
+	<meta name="Author" content="Ole Nielsen">
+	<meta name="Description" content="Javascript calculation and display of ephemerides in graphical or text format">
+	<meta name="KeyWords" content="astronomical calculation, ephemeris, javascript, sun, twilight, moon, planet, planets, visibility, stars, deep sky, skyplanner">
+	<base target=_top>
+	<link rel=stylesheet type="text/css" href="calc.css">
+	<style type="text/css">
+	P,H1,h3,H4 {text-align: center}
+	.title1 {font-weight: bold; color:#000; font-size:16px}
+	TD.input1 {background-color:#ee9; padding:3px}
+	.interface {margin: 0px; border: 0px; padding: 2px; font-size:13px;}
+	.button {background:#ccc; color:black; font-size:11px;}
+	.inputfield {background:#eee; font-size: 10px;}
+	.inputfield1 {background:#ee9; font-size: 10px;}
+	.innertable {border:0px; width:600px;}
+	</style>
+
+<script language="JavaScript" src="observer.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="datetime.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="cookie.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="makelist.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="makepage.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="planets.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="sunmoon.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="comet.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="stars.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="util.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="math.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="events.js" TYPE="text/javascript"></script>
+<script language="JavaScript" src="handlers.js" TYPE="text/javascript"></script>
+
+<script language=JavaScript type=text/javascript>
+<!--
+
+var timer_on = false;		// if true show timer alert box, for measuring performance
+var debug_on = false;		
+
+var datecount = new Array(1,2,3,5,7,10,14,18,21,28,-1,-2,-3,-6,-12,-24,-60,-120,-240,-600,-1200);
+var daystep = new Array(1/24.0,1/12.0,1/6.0,0.25,0.5,1,2,3,4,5,7,10,14,21,27.3217,28,29.5306,-1,-2,-3,-6,-12,-24,-60);
+var objlist = new Array(9,10,0,1,3,4,5,6,7,15,20,100);	// object numbers (object options)
+
+var aastep = new Array(5,10,15,30,60,120);	// options for alt/az time steps
+var obj2 = new Array(9,10,0,1,3,4,5,6,7,20); // object numbers for second objects (separation)
+var twl_alt = new Array(-0.833,-6.0,-12.0,-18.0); // options for sun depression angle for twilight alt/az
+var cut_alt = new Array(0,5,10,15,20,25,30);  // options for star/dso min altitude
+VIS=0; DAT=2; POS=3; A_A=4; TWI=5; SEP=6; L_EV=8; P_EV=9; STAR=10; DEC=0; LON=1; ELON=2;
+
+// all form handling functions moved to handlers.js
+
+// -->
+</script>
+</head>
+
+<body onLoad="getCookie('HOME',observer)">
+
+<h3>Javascript AstroTools</h3>
+<h1>Ephemeris Tool</h1>
+
+<h4>Ephemeris of Sun, Moon, planets, comets, stars and deep sky objects</h4>
+<hr>
+
+<noscript>
+<p><b><font size="+2">Please enable JavaScript to use this page.</font></b></p>
+</noscript>
+
+<p>Please see the <a href="toolsmanual.html" target=_blank>Manual</a> for usage, copyright, credits, source code etc.</p>
+<center>
+
+<form name="table1">
+<!-- the form object is globally referenced through the variable tbl -->
+<table border=1 cellpadding="3">
+<tr>
+	<td class="title1" width=100>Location and time zone</td>	
+	<td>
+<table class="innertable" cellspacing="0">
+<tr>
+	<td class="interface" width="34%"> Observatory: <input class="inputfield1"  type="text" size="17" name="Placename" onchange="updateplace(false)"></td>
+	<td class="interface">Time zone: UTC 
+		<INPUT class="inputfield1" type="text" size="6" name= "ut_offset"  value="" onchange="setUTCOff()"></td>
+	<td class="interface">Select from: 
+	<!-- The Place select is altered below by JavaScript -->
+		<select class="inputfield"  name="Place" onchange= "updateplace(true)">
+			<option>Select your home location</option>
+			<option>User location</option>
+		</select></td>
+</tr>
+<tr>
+	 <td class="interface">Longitude 
+		<input class="inputfield1"  type="text" size="6" name="Longitude" onchange="updatell()">
+	 	<select class="inputfield1"  name="West" onchange= "updatell()">
+	 		<option>W</option><option>E</option>
+	 	</select>
+	</td>
+	<td class="interface">
+		<input class="button" type="checkbox" name="DSTactive" value="yes" onclick="setTZ(true)"> Daylight Saving Time</td>
+	<td class="interface">
+		<input class="button" type="button" name="setcookie" value="Store (in cookie)" onclick= "setCookie('HOME',observer)"></td>
+</tr>
+<tr>
+	<td class="interface">Latitude &nbsp;
+	 	<input class="inputfield1"  type="text" size="6" name="Latitude" onchange="updatell()">
+	 	<select class="inputfield1"  name="North" onchange= "updatell()">
+	 		<option>N</option><option>S</option>
+	 	</select></td>
+	<td class="interface"><input class="button" type="button" name="fromrtc" value="Set Time Zone from computer" onclick= "setTZ(false)">
+	</td>
+	<td class="interface">
+		<input class="button" type="button" name="getcookie" value="Recall" onclick= "getCookie('HOME',observer)">
+		<input class="button" type="button" name="delcookie" value="Delete cookie"  onclick= "deleteCookie('HOME')">
+	</td>
+</tr>
+
+</table>
+	</td>
+</tr>
+
+<tr><td  class="title1">Date and Time</td>	
+	<td>
+<table class="innertable"  cellspacing="0">
+	<tr>
+		<td class="interface" width="34%">
+			Date <INPUT type="text" class="inputfield1" size="10" name="local_date" value="" onchange="setDateTime(0)">
+		</td>	
+		<td class="interface">
+			<input class="button" type="button" name="incrdecr" value="-7" onclick= "setDateTime(-7*1440)">
+			<input class="button" type="button" name="incrdecr" value="-1" onclick= "setDateTime(-1440)">
+			<input class="button" type="button" name="incrdecr" value="+1" onclick= "setDateTime(1440)">
+			<input class="button" type="button" name="incrdecr" value="+7" onclick= "setDateTime(7*1440)"> day(s)</td>
+		<td class="interface">
+			<input class="button" type="button" name="fromrtc" value="Now" onclick= "setNow()">
+		</td>
+	</tr>
+	<tr>
+		<td class="interface">
+			Time <INPUT type="text" class="inputfield1" size="5" name="local_time" value="" onchange="setDateTime(0)">
+		</td>
+		<td class="interface">
+			<input class="button" type="button" name="incrdecr" value="-1 hour" onclick= "setDateTime(-60)">
+			<input class="button" type="button" name="incrdecr" value="+1 hour" onclick= "setDateTime(60)"></td>
+		<td class="interface">
+			<input class="button" type="button" name="setnoon" value="Midnight" onclick= "set12(false)">
+			<input class="button" type="button" name="setnoon" value="Noon" onclick= "set12(true)"> 
+		</td>
+	</tr>
+	<tr>
+		<td class="interface">Julian Day <INPUT class="inputfield" type="text" size="11" name="julian" value="" onchange="jd2dt()"></td>
+		<td class="interface">Sidereal Time <input class="inputfield" type="text" size="5" name="siderial" value="" readonly></td>
+		<td class="interface"></td>
+	</tr>
+	</table>
+	</td>
+</tr>
+
+<tr><td class="title1">Time span</td>	
+	<td>
+<table class="innertable"  cellspacing="0">
+	<tr>
+		<td  class="interface" width="34%">Time span: 
+			<select name="Times" class="inputfield1">
+			<option>1 day</option><option>2 days</option><option>3 days</option><option>5 days</option>
+			<option selected>7 days</option><option>10 days</option><option>14 days</option><option>18 days</option>
+			<option>21 days</option><option>28 days</option><option>1 month</option>
+			<option>2 months</option><option>3 months</option><option>6 months</option>
+			<option>1 year</option><option>2 years</option><option>5 years</option><option>10 years</option>
+			<option>20 years</option><option>50 years</option><option>100 years</option>
+			</select> </td>
+		<td class="interface">Time step:
+			<select name="Step" class="inputfield1">
+			<option>1 hour</option><option>2 hours</option><option>4 hours</option><option>6 hours</option>
+			<option>12 hours</option>
+			<option selected>1 day</option><option>2 days</option><option>3 days</option><option>4 days</option>
+			<option>5 days</option><option>7 days</option><option>10 days</option><option>14 days</option>
+			<option>21 days</option><option>Siderial month</option><option>28 days</option>
+			<option>Synodic month</option><option>1 month</option><option>2 months</option>
+			<option>3 months</option><option>6 months</option><option>1 year</option>
+			<option>2 years</option><option>5 years</option>
+			</select> 
+		</td>
+	</tr>
+	</table>
+	</td>
+</tr>
+
+<tr><td class="title1">Object</td>	
+	<td>
+<table class="innertable"  cellspacing="0">
+			<tr>
+				<td class="interface" width="34%">
+					<select name="object" class="inputfield1"><option>Sun</option><option selected>Moon</option><option>Mercury</option>
+					<option>Venus</option><option>Mars</option><option>Jupiter</option><option>Saturn</option>
+					<option>Uranus</option><option>Neptune</option><option>Comet</option><option>User object</option>
+					<option>All Planets</option>
+					</select></td>
+				<td></td></tr>
+			<tr>
+				<td class="interface">Comet:<br>
+				<select name="comet" class="inputfield" onchange="updatecomet()">
+						<option>Select comet</option>
+					</select></td>
+				<td class="interface" colspan="3">Date of perihelion <br>
+					<input class="inputfield" type="text" size="15" name="perihel" value="" readonly></td>
+			</tr>
+			<tr>
+				<td class="interface">User object name:<br>
+					<input class="inputfield" type="text" size="20" name="objname" value="User Object" 
+						onchange="updateobject(false,false)"></td>
+				<td class="interface">RA:<br>
+					<INPUT class="inputfield" type="text" size="6" name="ra" value="00:00" 
+						onchange="updateobject(false,false)"></td>
+				<td class="interface">Dec:<br>
+					<INPUT class="inputfield" type="text" size="6" name= "dec" value="+00:00" 
+						onchange="updateobject(false,false)"></td>
+				<td class="interface">Or select from catalogue: <br>
+					<select class="inputfield" name="fixstar" onchange= "updateobject(true,false)">
+						<option>Star..</option>
+					</select>
+					<select class="inputfield" name="deepskyobj" onchange= "updateobject(true,true)">
+						<option>Deep sky..</option>
+					</select></td>
+			</tr>
+	</table>
+	</td>
+</tr>
+
+<tr>
+	<td class="title1">Tools<br><br>
+		<span style="font:smaller">Mode<br>
+		<input type="radio" name="outputtype" checked>Chart<br>
+		<input type="radio" name="outputtype">Text<br></span>
+		</td>	
+	<td>
+		<table cellspacing="6" align=left>
+			<tr>
+				<td width=150><input type="button" class="tbut" value="Daily Events" name="tooltype" 
+					onclick="switchboard(VIS)"></td>
+				<td>Include: <input type="checkbox" name="sunrises" value="a"> Sunrises/-sets</td></tr>
+			<tr>
+				<td><input type="button"  class="tbut" value="Object data" name="tooltype" onclick="switchboard(DAT)"></td>
+				<td></td>
+				</tr>
+			<tr>
+				<td><input type="button" class="tbut" value="Position" name="tooltype" onclick="switchboard(POS)"></td>
+				<td>(in chart mode only) Choose: <input type="radio" value="Decl" name="postool" checked>Declination 
+					<input type="radio" value="Long" name="postool">Longitude 
+					<input type="radio" value="Elong" name="postool">Elongation</td>
+				</tr>
+			<tr>
+				<td><input type="button" class="tbut" value="Twilight Altitude" name="tooltype" onclick="switchboard(TWI)"></td>
+				<td>Sun altitude:	<select class="inputfield" name="Twil_alt">
+					<option>-0.83 deg</option><option selected>-6.0 deg</option><option>-12.0 deg</option>
+					<option>-18.0 deg</option></select></td></tr>
+			<tr>
+				<td><input type="button" class="tbut" value="Alt-Azimuth" name="tooltype" onclick="switchboard(A_A)"></td>
+				<td>Time step:	<select class="inputfield" name="Altaz_step"><option>5 min</option>
+					<option>10 min</option><option>15 min</option><option selected>30 min</option><option>60 min</option>
+					<option>120 min</option></select></td></tr>
+			<tr>
+				<td><input type="button" class="tbut" value="Separation" name="tooltype" onclick="switchboard(SEP)"></td>
+				<td>Second object: <select class="inputfield" name="Object2"><option>Sun</option><option>Moon</option>
+					<option>Mercury</option><option>Venus</option><option>Mars</option><option>Jupiter</option>
+					<option>Saturn</option><option>Uranus</option><option>Neptune</option><option>User Object</option>
+					</select> Uses time step of 'Alt-Az'</td></tr>
+<!--			<tr>
+				<td><input type="button" class="tbut" value="Lunar/solar Events" name="tooltype" onclick="switchboard(L_EV)"></td>
+				<td></td></tr>
+			<tr>
+				<td><input type="button" class="tbut" value="Planet Events" name="tooltype" onclick="switchboard(P_EV)"></td>
+				<td>Include: <input type="checkbox" name="lun_ev" value="a"> Lunar events</td></tr>
+-->
+			<tr>
+				<td><input type="button" class="tbut" value="Visible" name="tooltype" onclick="switchboard(STAR)">
+					</td>
+				<td><select class="inputfield" name="Starordso">
+					<option>stars</option><option selected>deep sky obj.</option></select> 
+					Minimum altitude: <select class="inputfield" name="Cutoff_alt">
+					<option>0 deg</option><option>5 deg</option><option selected>10 deg</option><option>15 deg</option>
+					<option>20 deg</option><option>25 deg</option><option>30 deg</option>
+					</select> <input type="checkbox" name="RA_sort" value="a" checked> Sort in R.A.</td></tr>
+		</table>
+	</td>
+</tr>
+</table>
+</form>
+
+</center>
+
+<!-- Initialize the tables in the form --> 
+
+<script type="text/javascript" language="JavaScript">
+
+var tbl=document.table1; /* used globally to reference form elements */
+
+tbl.Place.options.length=0;
+for (var i=0; i<atlas.length; i++) {
+	tbl.Place.options[tbl.Place.options.length]=new Option(atlas[i].name);
+}
+reset1();
+
+// Add all star and dso objects from 'stars.js' to the drop down lists
+tbl.fixstar.options.length=1;
+for (var i=0; i<stars.length; i++) {
+	tbl.fixstar.options[tbl.fixstar.options.length]=new Option(stars[i].star+" "+stars[i].cons);
+}
+
+tbl.deepskyobj.options.length=1;
+for (var i=0; i<dso.length; i++) {
+	tbl.deepskyobj.options[tbl.deepskyobj.options.length]=new Option(dso[i].numb);
+}
+
+add_comets();
+tbl.comet.options.length=1;
+for (var i=0; i<comets.length; i++) {
+	tbl.comet.options[tbl.comet.options.length]=new Option(comets[i].name);
+}
+tbl.perihel.value="";
+
+</script>
+
+<!-- <p>AstroTools Version 3.3 (2005.01.04)</p> -->
+<p><a href="toolsmanual.html#copyright" target=_blank>Copyright &copy; Ole Nielsen 2002-2005 </a></p>
+
+<hr>
+<p>Back to <a href="astrotools2.html">Astrotools menu</a></p>
+<p>My web site: <a href="http://www.ngc7000.org/">Ole's Astronomy Site</a></p>
+
+<!--
+Astrotools and all its subcomponents like Ephemeris Tool have been released under the GNU 
+General Public Licence (GNU GPL).
+
+    Copyright (C) 2002-2005  Ole Nielsen
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+My e_mail address is   a s t r o n o m i   a t   p l a n e t   d o t   n l.
+
+The this programme was inspired by Javascript Ephemeris by Peter Hayes. 
+Some fragments of his code can still be found here and there. 
+For any code he has contributed the following copyright statement applies:
+
+******************************************************************************
+ Copyright Peter Hayes 1999-2001
+ This code may be copied for personal use subject to the following conditions.
+ 1) I accept no liability for coding errors.
+ 2) This notice and the references and credits in the notes page are retained.
+ 3) Some code was provided by other authors, please recognise their contribution.
+ Please keep me informed of any errors and suggestions for improvements.
+ My work e-mail address is  h a y e s   a t   c r a y   d o t   c o m (edited to avoid spam).
+ See the company pages at www.cray.com to find out who we are and what we do.
+******************************************************************************
+-->
+
+</body>
+</html>
+

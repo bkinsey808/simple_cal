@@ -1,0 +1,26 @@
+<?php
+
+$ckfile = tempnam ("/tmp", "CURLCOOKIE");
+
+/* STEP 2. visit the homepage to set the cookie properly */
+//		$uri = "http://ssd.jpl.nasa.gov/horizons.cgi";
+//		$uri .= "?l_str=%40399&s_lookup=Search#top";
+
+//		error_log($uri . "\n\n");
+
+//		$ch = curl_init ($uri);
+
+$ch = curl_init ();
+
+
+		curl_setopt ($ch, CURLOPT_COOKIEJAR, $ckfile);
+		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, true);
+		$output = curl_exec ($ch);
+
+		// set geocentric
+		$uri = "http://ssd.jpl.nasa.gov/horizons.cgi?l_str=geocentric&s_lookup=Search#top";
+		error_log($uri . "\n\n");
+
+		curl_setopt($ch, CURLOPT_URL, $uri);
+
+		$output = curl_exec ($ch);
